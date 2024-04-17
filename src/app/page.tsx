@@ -9,7 +9,7 @@ export default function Chat() {
   const [loading, setLoading] = useState(false);
   const generate_prompt = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       let headersList = {
         "Content-Type": "application/json",
       };
@@ -27,17 +27,15 @@ export default function Chat() {
       let data = await response.json();
       setPrompt(data.data);
       setInput("");
-      setLoading(false)
-
+      setLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(true)
-
+      setLoading(true);
     }
   };
 
   return (
-    <div className="mx-auto max-w-3xl my-20">
+    <div className="mx-auto max-w-3xl my-20 p-4">
       <div className="grid gap-2">
         <textarea
           className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
@@ -48,14 +46,24 @@ export default function Chat() {
         <button
           className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full bg-black text-white"
           onClick={generate_prompt}
-          disabled={loading}
+          disabled={input.length == 0 || loading}
         >
           {loading ? "Generating Prompt ..." : "Generate Better Prompt"}
         </button>
       </div>
-      <pre className="border border-gray-200 rounded p-4 grid gap-2 text-sm mt-5 text-wrap ">
-        {prompt}
-      </pre>
+      <div className="border border-gray-200 rounded p-4 grid gap-2 text-sm mt-5  relative">
+        <pre className="text-wrap">{prompt}</pre>
+
+        {prompt && (
+          <>
+            <button className="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:bg-black active:text-white disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3 absolute top-2 right-2"
+            
+            onClick={() => {navigator.clipboard.writeText(prompt.replace(/```prompt\n|\n```/g, ""))}}>
+              Copy
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
