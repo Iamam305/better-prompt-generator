@@ -17,7 +17,17 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = "Based on the following instrutions, help me write a good prompt TEMPLATE for the following task:\n {task} \nNotably, this prompt TEMPLATE expects that additional information will be provided by the end user of the prompt you are writing.\n For the piece(s) of information that they are expected to provide, please write the prompt in a format where they can be formatted into as if a Python f-string. When you have enough information to create a good prompt, return the prompt in the following format:\n\n```prompt\n\n...\n\n``` \nInstructions for a good prompt: \n {instructions}";
+const TEMPLATE = `Based on the instructions below, help me create an effective prompt TEMPLATE for the following task:
+{task}
+This TEMPLATE is designed to be dynamically completed by the end user. Please format the TEMPLATE using placeholders where additional user-provided information is expected. The placeholders should be designed to integrate seamlessly as if they were part of a Python f-string.
+
+When you have sufficient information to construct a robust prompt, please format and return the TEMPLATE as follows:
+
+\`\`\`prompt
+
+...
+
+`;
 
 /*
  * This handler initializes and calls a simple chain with a prompt,
